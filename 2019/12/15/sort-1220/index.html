@@ -53,14 +53,14 @@
 <meta property="og:site_name" content="Blog">
 <meta property="og:description" content="选择排序 选择排序（Selection sort）是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。  时间复杂度：O(n2) 空间复杂度：O(1) 实现： 1234567891011121314151617function sel">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;.com&#x2F;&#x2F;12&#x2F;15&#x2F;sort-1220&#x2F;bubble.gif">
-<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;.com&#x2F;&#x2F;insert.gif">
-<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;.com&#x2F;&#x2F;merge2.gif">
-<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;.com&#x2F;&#x2F;merge.gif">
-<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;.com&#x2F;&#x2F;quick.gif">
-<meta property="og:updated_time" content="2019-12-16T15:31:52.901Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2019&#x2F;12&#x2F;15&#x2F;sort-1220&#x2F;bubble.gif">
+<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2019&#x2F;12&#x2F;15&#x2F;sort-1220&#x2F;insert.gif">
+<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2019&#x2F;12&#x2F;15&#x2F;sort-1220&#x2F;merge2.gif">
+<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2019&#x2F;12&#x2F;15&#x2F;sort-1220&#x2F;merge.gif">
+<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2019&#x2F;12&#x2F;15&#x2F;sort-1220&#x2F;quick.gif">
+<meta property="og:updated_time" content="2019-12-16T16:21:56.498Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;.com&#x2F;&#x2F;12&#x2F;15&#x2F;sort-1220&#x2F;bubble.gif">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2019&#x2F;12&#x2F;15&#x2F;sort-1220&#x2F;bubble.gif">
 
 <link rel="canonical" href="https://blog.chenkeren.com/2019/12/15/sort-1220/">
 
@@ -205,7 +205,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-12-16 23:31:52" itemprop="dateModified" datetime="2019-12-16T23:31:52+08:00">2019-12-16</time>
+                <time title="Modified: 2019-12-17 00:21:56" itemprop="dateModified" datetime="2019-12-17T00:21:56+08:00">2019-12-17</time>
               </span>
 
           
@@ -232,9 +232,7 @@
 </blockquote>
 <p>时间复杂度：O(n2)</p>
 <p>空间复杂度：O(1)</p>
-<h4 id="图解"><a href="#图解" class="headerlink" title="图解"></a>图解</h4><img src="/.com//12/15/sort-1220/bubble.gif" class>
-<!-- ![](sort-1220/bubble.gif) -->
-
+<h4 id="图解"><a href="#图解" class="headerlink" title="图解"></a>图解</h4><p><img src="/2019/12/15/sort-1220/bubble.gif" alt></p>
 <h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bubbleSort</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> len = arr.length;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = len - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">1</span>; j &lt; i; j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (arr[j] &gt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">        swap(arr, j, j + <span class="number">1</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <a id="more"></a>
@@ -242,17 +240,17 @@
 <h3 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h3><blockquote>
 <p><strong>插入排序</strong>（英语：Insertion Sort）是一种简单直观的<a href="https://zh.wikipedia.org/wiki/排序算法" target="_blank" rel="noopener">排序算法</a>。它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。</p>
 </blockquote>
-<h4 id="图解-1"><a href="#图解-1" class="headerlink" title="图解"></a>图解</h4><p><img src="/.com//insert.gif" alt></p>
+<h4 id="图解-1"><a href="#图解-1" class="headerlink" title="图解"></a>图解</h4><p><img src="/2019/12/15/sort-1220/insert.gif" alt></p>
 <h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4><ol>
-<li><p>首先从 1开始，由于 1 比 2 小，需要将 1 插入到 2 的前面，两两交换位置即可，[1, 2, 7, 9, 5, 8]。</p>
+<li><p>首先从1开始，由于1比2小，需要将1插入到2的前面，两两交换位置即可，[1, 2, 7, 9, 5, 8]。</p>
 </li>
-<li><p>然后，我们要把 7 插入到左边的部分，由于 7  &gt; 2 ，因此它是目前最大的元素，位置不变，[1, 2, 7, 9, 5, 8]。</p>
+<li><p>然后，我们要把7插入到左边的部分，由于7 &gt; 2，因此它是目前最大的元素，位置不变，[1, 2, 7, 9, 5, 8]。</p>
 </li>
-<li><p>同理，9 也不需要变动，[1, 2, 7, 9, 5, 8]。</p>
+<li><p>同理，9也不需要变动，[1, 2, 7, 9, 5, 8]。</p>
 </li>
-<li><p>接下来，需要把 5 插入到合适的位置。首先比较 5 和 9，由于 5 比 9 小，两两交换，[1, 2, 7, 5, 9, 8]，继续，由于 5 比 7 小，两两交换，[1, 2, 5, 7, 9, 8]，最后，由于 5 比 2 大，流程结束。</p>
+<li><p>接下来，需要把5插入到合适的位置。首先比较5和9，由于5 &lt; 9小，两两交换，[1, 2, 7, 5, 9, 8]，继续，由于5 &lt; 7小，两两交换，[1, 2, 5, 7, 9, 8]，最后，由于5 &gt; 2大，流程结束。</p>
 </li>
-<li><p>最后一个数是 8，由于 8 比 9 小，两两交换，[1, 2, 5, 7, 8, 9]，再比较 7 和 8，发现 8 比 7 大，流程结束。插入排序完成。</p>
+<li><p>最后一个数是8，由于8 比 9小，两两交换，[1, 2, 5, 7, 8, 9]，再比较7和8，发现8比7大，流程结束。插入排序完成。</p>
 </li>
 </ol>
 <h4 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">insertSort</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">    <span class="comment">// 寻找元素arr[i]合适的插入位置</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = i; j &gt; <span class="number">0</span>; j--) &#123;</span><br><span class="line">      <span class="keyword">if</span> (arr[j] &lt; arr[j - <span class="number">1</span>]) &#123;</span><br><span class="line">        swap(arr, j, j - <span class="number">1</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">swap</span>(<span class="params">arr, i, j</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> temp = arr[i];</span><br><span class="line">  arr[i] = arr[j];</span><br><span class="line">  arr[j] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -266,7 +264,7 @@
 <p>当数组按照逆序排列，需进行 n(n - 1) / 2 次比较，时间复杂度是 O(n2)；</p>
 <p>因此，平均时间复杂度是O(n2)，并且它也是一种稳定的排序算法；</p>
 <h3 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h3><h4 id="图解-2"><a href="#图解-2" class="headerlink" title="图解"></a>图解</h4><p>拆分过程：</p>
-<p><img src="/.com//merge2.gif" alt></p>
+<p><img src="/2019/12/15/sort-1220/merge2.gif" alt></p>
 <ol>
 <li>把数组 L 为 [1, 2, 7] ，R 为 [5, 8, 9] 。</li>
 <li>合并的时候，开辟分配一个新数组 T 保存结果。</li>
@@ -278,7 +276,7 @@
 <li>这时候，左边的数组已经处理完毕，直接将右边数组剩余的元素放到结果数组里就好。</li>
 </ol>
 <p>合并过程：</p>
-<p><img src="/.com//merge.gif" alt></p>
+<p><img src="/2019/12/15/sort-1220/merge.gif" alt></p>
 <ol>
 <li>合并 [2] 和 [1] 为 [1, 2]。</li>
 <li>数组 [1, 2] 和 [7] 合并。</li>
@@ -293,7 +291,7 @@
 <p>2.时间复杂度</p>
 <p>对于规模为 n 的问题，一共要进行 log(n) 层的大小切分。在每一层里，我们都要进行合并，所涉及到的元素其实就是数组里的所有元素，因此，每一层的合并复杂度都是 O(n)，所以整体的复杂度就是 O(nlogn)。</p>
 <h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><h4 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h4><p>分治</p>
-<h4 id="图解-3"><a href="#图解-3" class="headerlink" title="图解"></a>图解</h4><p><img src="/.com//quick.gif" alt></p>
+<h4 id="图解-3"><a href="#图解-3" class="headerlink" title="图解"></a>图解</h4><p><img src="/2019/12/15/sort-1220/quick.gif" alt></p>
 <h4 id="过程-1"><a href="#过程-1" class="headerlink" title="过程"></a>过程</h4><ol>
 <li>首先把数组筛选成较小和较大的两个子数组。</li>
 <li>随机从数组里选取一个数作为基准值，比如 7，于是原始的数组就被分成了两个子数组。</li>
