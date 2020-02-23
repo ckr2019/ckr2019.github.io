@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="深度优先搜索（DFS）概念深度优先搜索，是对一个连通图进行遍历的算法，它的核心思想是，从规定的方向中选择其中一个不断地向前走，直到无法继续为止，然后尝试另外一种方向，直到最后走到终点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度与广度优先搜索">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2020&#x2F;02&#x2F;23&#x2F;dfs-bfs&#x2F;index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="深度优先搜索（DFS）概念深度优先搜索，是对一个连通图进行遍历的算法，它的核心思想是，从规定的方向中选择其中一个不断地向前走，直到无法继续为止，然后尝试另外一种方向，直到最后走到终点。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2020&#x2F;02&#x2F;23&#x2F;dfs-bfs&#x2F;dfs1.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2020&#x2F;02&#x2F;23&#x2F;dfs-bfs&#x2F;dfs1.png">
+<meta property="og:updated_time" content="2020-02-23T16:11:36.440Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2020&#x2F;02&#x2F;23&#x2F;dfs-bfs&#x2F;dfs1.png">
+
+<link rel="canonical" href="https://blog.chenkeren.com/2020/02/23/dfs-bfs/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>深度与广度优先搜索 | Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="https://blog.chenkeren.com/2020/02/23/dfs-bfs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Chen Keren">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度与广度优先搜索
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-23 18:13:11" itemprop="dateCreated datePublished" datetime="2020-02-23T18:13:11+08:00">2020-02-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="深度优先搜索（DFS）"><a href="#深度优先搜索（DFS）" class="headerlink" title="深度优先搜索（DFS）"></a>深度优先搜索（DFS）</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>深度优先搜索，是对一个连通图进行遍历的算法，它的核心思想是，从规定的方向中选择其中一个不断地向前走，直到无法继续为止，然后尝试另外一种方向，直到最后走到终点。</p>
+<a id="more"></a>
+
+<p>即，给定两个点，一个是起始点，一个是终点，判断是不是有一条路径能从起点连接到终点。问题并不在乎路径是长还是短，只在乎有还是没有。</p>
+<p><img src="/2020/02/23/dfs-bfs/dfs1.png" alt></p>
+<p>如图，里面有A、B、C、D、E、F、G、H 8 个顶点，点和点之间的联系如下图所示，对这个图进行深度优先的遍历，必须依赖栈，特点是后进先出。</p>
+<h4 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h4><ol>
+<li><p>选择一个起始顶点，例如从顶点 A 开始。把 A 压入栈，标记它为访问过（用红色标记），并输出到结果中。</p>
+</li>
+<li><p>寻找与 A 相连并且还没有被访问过的顶点，顶点 A 与 B、D、G 相连，而且它们都还没有被访问过，我们按照字母顺序处理，所以将 B 压入栈，标记它为访问过，并输出到结果中。</p>
+</li>
+<li><p>现在我们在顶点 B 上，重复上面的操作，由于 B 与 A、E、F 相连，如果按照字母顺序处理的话，A 应该是要被访问的，但是 A 已经被访问了，所以我们访问顶点 E，将 E 压入栈，标记它为访问过，并输出到结果中。</p>
+</li>
+<li><p>从 E 开始，E 与 B、G 相连，但是B刚刚被访问过了，所以下一个被访问的将是G，把G压入栈，标记它为访问过，并输出到结果中。</p>
+</li>
+<li><p>现在我们在顶点 G 的位置，由于与 G 相连的顶点都被访问过了，类似于我们走到了一个死胡同，必须尝试其他的路口了。所以我们这里要做的就是简单地将 G 从栈里弹出，表示我们从 G 这里已经无法继续走下去了，看看能不能从前一个路口找到出路。</p>
+<p>可以看到，每次我们在考虑下一个要被访问的点是什么的时候，如果发现周围的顶点都被访问了，就把当前的顶点弹出。</p>
+</li>
+<li><p>现在栈的顶部记录的是顶点 E，我们来看看与 E 相连的顶点中有没有还没被访问到的，发现它们都被访问了，所以把 E 也弹出去。</p>
+</li>
+<li><p>当前栈的顶点是 B，看看它周围有没有还没被访问的顶点，有，是顶点 F，于是把 F 压入栈，标记它为访问过，并输出到结果中。</p>
+</li>
+<li><p>当前顶点是 F，与 F 相连并且还未被访问到的点是 C 和 D，按照字母顺序来，下一个被访问的点是 C，将 C 压入栈，标记为访问过，输出到结果中。</p>
+</li>
+<li><p>当前顶点为 C，与 C 相连并尚未被访问到的顶点是 H，将 H 压入栈，标记为访问过，输出到结果中。</p>
+</li>
+<li><p>当前顶点是 H，由于和它相连的点都被访问过了，将它弹出栈。</p>
+</li>
+<li><p>当前顶点是 C，与 C 相连的点都被访问过了，将 C 弹出栈。</p>
+</li>
+<li><p>当前顶点是 F，与 F 相连的并且尚未访问的点是 D，将 D 压入栈，输出到结果中，并标记为访问过。</p>
+</li>
+<li><p>当前顶点是 D，与它相连的点都被访问过了，将它弹出栈。以此类推，顶点 F，B，A 的邻居都被访问过了，将它们依次弹出栈就好了。最后，当栈里已经没有顶点需要处理了，我们的整个遍历结束。</p>
+</li>
+</ol>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dfs</span>(<span class="params">v</span>) </span>&#123;</span><br><span class="line">  visited[v] = <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">if</span>(adj[v]) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(v);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; adj[v].length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span>(visited[i])&#123;</span><br><span class="line">        dfs(i);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="例1"><a href="#例1" class="headerlink" title="例1"></a>例1</h4><p>给定一个二维矩阵代表一个迷宫，迷宫里面有通道，也有墙壁，通道由数字 0 表示，而墙壁由 -1 表示，有墙壁的地方不能通过，那么，能不能从 A 点走到 B 点。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line"><span class="keyword">const</span> direction = [[<span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">-1</span>], [<span class="number">-1</span>, <span class="number">0</span>]];</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dfs</span>(<span class="params">maze, x, y</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 1. 判断递归出口，即是否找到B</span></span><br><span class="line">  <span class="keyword">if</span> (x === B[<span class="number">0</span>] &amp;&amp; y === B[<span class="number">1</span>]) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 2. 标记当前节点</span></span><br><span class="line">  maze[x][y] = <span class="number">-1</span>;</span><br><span class="line">  <span class="comment">// 3. 在四个方向上尝试</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> d = <span class="number">0</span>; d &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">let</span> i = x + direction[i][<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">let</span> j = y + direction[i][<span class="number">1</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 4. 如果找到B，则返回true</span></span><br><span class="line">    <span class="keyword">if</span> (safe(i, j) &amp;&amp; dfs[maze, i, j]) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 5. 遍历一遍之后未找到</span></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="广度优先搜索（BFS）"><a href="#广度优先搜索（BFS）" class="headerlink" title="广度优先搜索（BFS）"></a>广度优先搜索（BFS）</h3><h4 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h4><p>广度优先搜索，一般用来解决最短路径的问题。</p>
+<p>和深度优先搜索不同，广度优先的搜索是从起始点出发，一层一层地进行，每层当中的点距离起始点的步数都是相同的，当找到了目的地之后就可以立即结束。</p>
+<p>广度优先的搜索可以同时从起始点和终点开始进行，称之为双端 BFS。这种算法往往可以大大地提高搜索的效率。</p>
+<p><img src="/2020/02/23/dfs-bfs/dfs1.png" alt></p>
+<p>如图，里面有A、B、C、D、E、F、G、H 8 个顶点，点和点之间的联系如下图所示，对这个图进行深度优先的遍历。依赖队列，先进先出。</p>
+<h4 id="算法步骤-1"><a href="#算法步骤-1" class="headerlink" title="算法步骤"></a>算法步骤</h4><p>逐层地把与某个点相连的点放入队列中，处理节点的时候正好按照它们进入队列的顺序进行。</p>
+<ol>
+<li>选择一个起始顶点，让我们从顶点 A 开始。把 A 压入队列，标记它为访问过。</li>
+<li>从队列的头取出顶点 A，打印输出到结果中，同时将与它相连的尚未被访问过的点按顺序压入队列，同时把它们都标记为访问过，防止它们被重复地添加到队列中。</li>
+<li>从队列的头取出顶点 B，打印输出它，同时将与它相连的尚未被访问过的点（也就是 E 和 F）压入队列，同时把它们都标记为访问过。</li>
+<li>继续从队列的头取出顶点 D，打印输出它，此时我们发现，与 D 相连的顶点 A 和 F 都被标记访问过了，所以就不要把它们压入队列里。</li>
+<li>接下来，队列的头是顶点 G，打印输出它，同样的，G 周围的点都被标记访问过了。我们不做任何处理。</li>
+<li>队列的头是 E，打印输出它，它周围的点也都被标记为访问过了，我们不做任何处理。</li>
+<li>接下来轮到顶点 F，打印输出它，将 C 压入队列，并标记 C 为访问过。</li>
+<li>将 C 从队列中移出，打印输出它，与它相连的 H 还没被访问到，将 H 压入队列，将它标记为访问过。</li>
+<li>队列里只剩下 H 了，将它移出，打印输出它，发现它的邻居都被访问过了，不做任何事情。</li>
+<li>队列为空，表示所有的点都被处理完毕了，程序结束。</li>
+</ol>
+<h4 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bfs</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> queue = [];</span><br><span class="line">  visited[s] = <span class="literal">true</span>;</span><br><span class="line">  queue.push(s);</span><br><span class="line">  <span class="keyword">while</span>(queue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> v = queue.shift();</span><br><span class="line">    <span class="built_in">console</span>.log(v);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; adj[v].length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span>(!visited[i])&#123;</span><br><span class="line">        queue.push(i);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="例1-1"><a href="#例1-1" class="headerlink" title="例1"></a>例1</h4><p>运用广度优先搜索的算法寻找上题迷宫中的最短的路径。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bfs</span>(<span class="params">maze, x, y</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 创建一个队列queue，将起始点A加入队列中</span></span><br><span class="line">    <span class="keyword">let</span> queue = [];</span><br><span class="line">    queue.push(&#123;x, y&#125;);</span><br><span class="line">    <span class="comment">// 队列不为空，循环</span></span><br><span class="line">    <span class="keyword">while</span> (queue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 从队列的头取出当前点</span></span><br><span class="line">        <span class="keyword">const</span> pos = queue.shift();</span><br><span class="line">        x = pos[<span class="number">0</span>]; y = pos[<span class="number">1</span>];</span><br><span class="line">        <span class="comment">// 从四个方向进行BFS</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> d = <span class="number">0</span>; d &lt; <span class="number">4</span>; d++) &#123;</span><br><span class="line">            <span class="keyword">let</span> i = x + direction[d][<span class="number">0</span>];</span><br><span class="line">        		<span class="keyword">let</span> j = y + direction[d][<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> (safe(maze, i, j)) &#123;</span><br><span class="line">                <span class="comment">// 记录距离</span></span><br><span class="line">                maze[i][j] = maze[x][y] + <span class="number">1</span>;</span><br><span class="line">                <span class="comment">// 然后添加到队列中  </span></span><br><span class="line">                queue.push(&#123;i, j&#125;);</span><br><span class="line">                <span class="comment">// 找到B点，返回 </span></span><br><span class="line">                <span class="keyword">if</span> (i === B[<span class="number">0</span>] &amp;&amp; j === B[<span class="number">1</span>])&#123;</span><br><span class="line">                  <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h4><p>假设有 V 个顶点，E 条边：</p>
+<p>时间复杂度：</p>
+<ol>
+<li><p>邻接表</p>
+<p>每个顶点都需要被访问一次，时间复杂度是 O(V)；相连的顶点（也就是每条边）也都要被访问一次，加起来就是 O(E)。因此整体时间复杂度就是 O(V+E)。</p>
+</li>
+<li><p>邻接矩阵</p>
+<p>V 个顶点，每次都要检查每个顶点与其他顶点是否有联系，因此时间复杂度是 O(V2)。</p>
+</li>
+</ol>
+<p>例如，在迷宫里进行 BFS 搜索，用邻接矩阵。假设矩阵有 M 行 N 列，那么一共有 M×N 个顶点，时间复杂度就是 O(M×N)。</p>
+<p>空间复杂度：</p>
+<p>由于需要借助队列，所有顶点都要进入队列一次，从队列弹出一次。在最坏的情况下，空间复杂度是 O(V)，即 O(M×N)。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/31/title/" rel="prev" title="数据结构与算法-排序（下）">
+      <i class="fa fa-chevron-left"></i> 数据结构与算法-排序（下）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#深度优先搜索（DFS）"><span class="nav-number">1.</span> <span class="nav-text">深度优先搜索（DFS）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法步骤"><span class="nav-number">1.2.</span> <span class="nav-text">算法步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现"><span class="nav-number">1.3.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例1"><span class="nav-number">1.4.</span> <span class="nav-text">例1</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#广度优先搜索（BFS）"><span class="nav-number">2.</span> <span class="nav-text">广度优先搜索（BFS）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念-1"><span class="nav-number">2.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法步骤-1"><span class="nav-number">2.2.</span> <span class="nav-text">算法步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现-1"><span class="nav-number">2.3.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例1-1"><span class="nav-number">2.4.</span> <span class="nav-text">例1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法分析"><span class="nav-number">2.5.</span> <span class="nav-text">算法分析</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Chen Keren</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Keren</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.5.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
