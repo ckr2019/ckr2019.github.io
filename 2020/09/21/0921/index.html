@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="二分搜索与贪心算法二分搜索算法看似很简单，但是写起来也不是太容易。贪婪算法是一种比较直观的算法，但是比较难的地方在于证明它的正确性，有时会误认为得到的答案是正确的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二分搜索与贪心算法">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2020&#x2F;09&#x2F;21&#x2F;0921&#x2F;index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="二分搜索与贪心算法二分搜索算法看似很简单，但是写起来也不是太容易。贪婪算法是一种比较直观的算法，但是比较难的地方在于证明它的正确性，有时会误认为得到的答案是正确的。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2020&#x2F;09&#x2F;21&#x2F;0921&#x2F;01.gif">
+<meta property="og:updated_time" content="2020-09-21T16:04:46.063Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2020&#x2F;09&#x2F;21&#x2F;0921&#x2F;01.gif">
+
+<link rel="canonical" href="https://blog.chenkeren.com/2020/09/21/0921/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>二分搜索与贪心算法 | Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="https://blog.chenkeren.com/2020/09/21/0921/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Chen Keren">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          二分搜索与贪心算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-21 22:46:48" itemprop="dateCreated datePublished" datetime="2020-09-21T22:46:48+08:00">2020-09-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="二分搜索与贪心算法"><a href="#二分搜索与贪心算法" class="headerlink" title="二分搜索与贪心算法"></a>二分搜索与贪心算法</h2><p>二分搜索算法看似很简单，但是写起来也不是太容易。贪婪算法是一种比较直观的算法，但是比较难的地方在于证明它的正确性，有时会误认为得到的答案是正确的。</p>
+<a id="more"></a>
+
+<h3 id="二分搜索"><a href="#二分搜索" class="headerlink" title="二分搜索"></a>二分搜索</h3><p>二分搜索的定义：是一种在有序数组中查找某一特定元素的搜索算法。从定义可知，运用二分搜索的前提是数组必须是排好序的。另外，输入并不一定是数组，也有可能是给定一个区间的起始和终止的位置。</p>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>时间复杂度是 O(logn)，非常高效。</p>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p>要求待查找的数组或者区间是排好序的。</p>
+<p>因此，当输入的数组或者区间是排好序的，同时又不会经常变动，而要求从里面找出一个满足条件的元素的时候，二分搜索就是最好的选择。</p>
+<p>二分搜索一般化的解题思路如下。</p>
+<p><img src="/2020/09/21/0921/01.gif" alt></p>
+<ol>
+<li>从已经排好序的数组或区间中取出中间位置的元素，判断该元素是否满足要搜索的条件，如果满足，停止搜索，程序结束。</li>
+<li>如果正中间的元素不满足条件，则从它两边的区域进行搜索。由于数组是排好序的，可以利用排除法，确定接下来应该从这两个区间中的哪一个去搜索。</li>
+<li>通过判断，如果发现真正要找的元素在左半区间的话，就继续在左半区间里进行二分搜索。反之，就在右半区间里进行二分搜索。</li>
+</ol>
+<h4 id="递归解法"><a href="#递归解法" class="headerlink" title="递归解法"></a>递归解法</h4><p>优点：简洁；缺点：执行消耗大</p>
+<p>假设我们要从一个排好序的数组里 {1, 3, 4, 6, 7, 8, 10, 13, 14} 查看一下数字 7 是否在里面，如果在，返回它的下标，否则返回 -1。</p>
+<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> binarySearch = <span class="function">(<span class="params">nums, target, low, high</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (low &gt; high) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> middle = <span class="built_in">Math</span>.floor(low + (high - low) / <span class="number">2</span>);</span><br><span class="line">  <span class="keyword">if</span> (nums[middle] === target) &#123;</span><br><span class="line">    <span class="keyword">return</span> middle;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (target &lt; nums[middle]) &#123;</span><br><span class="line">    <span class="keyword">return</span> binarySearch(nums, target, low, middle - <span class="number">1</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> binarySearch(nums, target, middle + <span class="number">1</span>, high);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在计算 middle 下标的时候，不能简单地用 (low + hight) / 2，可能会导致溢出。</li>
+<li>在取左半边以及右半边的区间时，左半边是 [low, middle - 1]，右半边是 [middle + 1, high]，这是两个闭区间。因为已经确定了 middle 那个点不是我们要找的，就没有必要再把它加入到左、右半边了。</li>
+<li>对于一个长度为奇数的数组，例如：[1, 2, 3, 4, 5]，按照 low + (high - low) / 2 来计算，middle 就是正中间的那个位置，对于一个长度为偶数的数组，例如 [1, 2, 3, 4]，middle 就是正中间靠左边的一个位置。</li>
+</ol>
+<h4 id="非递归解法"><a href="#非递归解法" class="headerlink" title="非递归解法"></a>非递归解法</h4><h5 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> binarySearch = <span class="function">(<span class="params">nums, target, low, high</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">while</span> (low &lt;= high) &#123;</span><br><span class="line">    <span class="keyword">let</span> middle = <span class="built_in">Math</span>.floor(low + (high - low) / <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">if</span> (nums[middle] === target) &#123;</span><br><span class="line">      <span class="keyword">return</span> middle;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (target &lt; nums[middle]) &#123;</span><br><span class="line">      high = middle - <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      low = middle + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>确定搜索的范围和区间</li>
+<li>取中间的数判断是否满足条件</li>
+<li>如果不满足条件，判定应该往哪个半边继续进行搜索</li>
+</ol>
+<h3 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h3><p>贪婪算法的定义：是一种在每一步选中都采取在当前状态下最好或最优的选择，从而希望导致结果是最好或最优的算法。</p>
+<p>优点：对于一些问题，非常直观有效。</p>
+<p>缺点：</p>
+<ul>
+<li><p>并不是所有问题都能用它去解决；</p>
+</li>
+<li><p>得到的结果并一定不是正确的，因为这种算法容易过早地做出决定，从而没有办法达到最优解。</p>
+<p>下面通过例题来加深对贪婪算法的认识。例题：0-1 背包问题，能不能运用贪婪算法去解决。</p>
+</li>
+</ul>
+<h4 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h4><p>假设在背包问题中有三种策略：</p>
+<ol>
+<li>选取价值最大的物品</li>
+<li>选择重量最轻的物品</li>
+<li>选取价值/重量比最大的物品</li>
+</ol>
+<h4 id="策略-1"><a href="#策略-1" class="headerlink" title="策略 1"></a>策略 1</h4><p>每次尽可能选择价值最大的，行不通。举例说明如下。</p>
+<p>物品有：A B C</p>
+<p>重量分别是：25, 10, 10</p>
+<p>价值分别是：100，80，80</p>
+<p>根据策略，首先选取物品 A，接下来就不能再去选其他物品，但是，如果选取 B 和 C，结果会更好。</p>
+<h4 id="策略-2"><a href="#策略-2" class="headerlink" title="策略 2"></a>策略 2</h4><p>每次尽可能选择轻的物品，行不通。举例说明如下。</p>
+<p>物品有：A B C</p>
+<p>重量分别为：25, 10, 10</p>
+<p>价值分别为：100, 5, 5</p>
+<p>根据策略，首先选取物品 B 和 C，接下来就不能选 A，但是，如果选 A，价值更大。</p>
+<h4 id="策略-3"><a href="#策略-3" class="headerlink" title="策略 3"></a>策略 3</h4><p>每次尽可能选价值/重量比最大的，行不通。举例说明如下。</p>
+<p>物品有：A B C</p>
+<p>重量是：25, 10, 10</p>
+<p>价值是：25, 10, 10</p>
+<p>根据策略，三种物品的价值/重量比都是一样，如果选 A，答案不对，应该选 B 和 C。</p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>综上，贪婪算法总是做出在当前看来是最好的选择。即，它不从整体的角度去考虑，仅仅对局部的最优解感兴趣。因此，只有当那些局部最优策略能产生全局最优策略的时候，才能用贪婪算法。</p>
+<h4 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h4><p>LeetCode 第 253 题，会议室 II，给定一系列会议的起始时间和结束时间，求最少需要多少个会议室就可以让这些会议顺利召开。</p>
+<h5 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h5><p>思路 1：暴力法。</p>
+<ul>
+<li>把所有的会议组合找出来；</li>
+<li>从最长的组合开始检查，看看各个会议之间有没有冲突；</li>
+<li>直到发现一组会议没有冲突，那么它就是答案。</li>
+</ul>
+<p>很明显，这样的解法是非常没有效率的。</p>
+<p>思路 2：贪心算法</p>
+<ul>
+<li>会议按照起始时间顺序进行；</li>
+<li>要给新的即将开始的会议找会议室时，先看当前有无空会议室；</li>
+<li>有则在空会议室开会，无则开设一间新会议室。</li>
+</ul>
+<h5 id="代码实现-2"><a href="#代码实现-2" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> minMeetingRooms = <span class="function"><span class="keyword">function</span> (<span class="params">intervals</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (intervals.length === <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//按时间顺序排序</span></span><br><span class="line">  intervals.sort(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a[<span class="number">0</span>] - b[<span class="number">0</span>]);</span><br><span class="line">  <span class="comment">//优先队列</span></span><br><span class="line">  <span class="keyword">let</span> rooms = [];</span><br><span class="line">  rooms.push(intervals[<span class="number">0</span>]);</span><br><span class="line">  <span class="keyword">let</span> maxRoomNum = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; intervals.length; i++) &#123;</span><br><span class="line">    <span class="comment">//新会议开始前，优先队列队头看是否空出会议室</span></span><br><span class="line">    <span class="keyword">if</span> (intervals[i][<span class="number">0</span>] &gt;= rooms[<span class="number">0</span>][<span class="number">1</span>]) &#123;</span><br><span class="line">      rooms.shift();</span><br><span class="line">    &#125;</span><br><span class="line">    rooms.push(intervals[i]);</span><br><span class="line">    <span class="comment">//记录更新最大会议室数</span></span><br><span class="line">    maxRoomNum = maxRoomNum &gt; rooms.length ? maxRoomNum : rooms.length;</span><br><span class="line">    <span class="comment">//每轮队列更新后维护优先级（结束时间越早，排序越前）</span></span><br><span class="line">    rooms.sort(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a[<span class="number">1</span>] - b[<span class="number">1</span>]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> maxRoomNum;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>将会议按照开始时间，从小到大排序。（模拟按时间顺序会议室的占用情况）</li>
+<li>维护一个优先队列：由正在开会的会议组成，按会议结束时间排序，结束时间越早，排在越前面。（模拟会议室的使用情况，结束时间越早，释放的也相对最早）。</li>
+<li>每当一个会议到点需要开始时，和优先队列里最早能释放会议室的会议进行时间比较，如果：新会议开始时间在优先队列里最前的会议结束时间之后，说明最早结束时间的会议已经结束，已经空了会议室（队头 shift 删除），则不用添加会议室，直接将准备开始的新会议 push 入队列，同时维护优先队列的排列顺序。如果新会议的开始时间，小于队头会议结束时间（最早结束时间），则证明时间冲突，需要增加会议室，直接 push 入队列。</li>
+<li>队列代表着在不同会议室正在进行的会议，则每轮记录队列大小，记录下所有会议结束后，此过程中队列的最大值，即对应至少需要多少会议室。</li>
+</ol>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>那么，为什么这样就可以产生最优解呢，这个我也不是特别清楚，大家有兴趣可以研究一下。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/24/824/" rel="prev" title="从输入URL到页面展示，中间发生了什么">
+      <i class="fa fa-chevron-left"></i> 从输入URL到页面展示，中间发生了什么
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#二分搜索与贪心算法"><span class="nav-number">1.</span> <span class="nav-text">二分搜索与贪心算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二分搜索"><span class="nav-number">1.1.</span> <span class="nav-text">二分搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点"><span class="nav-number">1.1.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点"><span class="nav-number">1.1.2.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#递归解法"><span class="nav-number">1.1.3.</span> <span class="nav-text">递归解法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#代码实现"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非递归解法"><span class="nav-number">1.1.4.</span> <span class="nav-text">非递归解法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#代码实现-1"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#贪心算法"><span class="nav-number">1.2.</span> <span class="nav-text">贪心算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#策略"><span class="nav-number">1.2.1.</span> <span class="nav-text">策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#策略-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">策略 1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#策略-2"><span class="nav-number">1.2.3.</span> <span class="nav-text">策略 2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#策略-3"><span class="nav-number">1.2.4.</span> <span class="nav-text">策略 3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">1.2.5.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用"><span class="nav-number">1.2.6.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#解题思路"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#代码实现-2"><span class="nav-number">1.2.6.2.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.2.7.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Chen Keren</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Keren</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.5.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
