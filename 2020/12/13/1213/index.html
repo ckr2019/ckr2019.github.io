@@ -53,7 +53,7 @@
 <meta property="og:site_name" content="Blog">
 <meta property="og:description" content="TypeScript 学习笔记（一）最近项目中可以使用 ts 了，本文主要是对 ts 的学习做一个记录。 安装命令 1npm install -g typescript  安装之后就可以使用 tsc 命令编译 ts 文件 1tsc index.ts">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-12-13T15:50:11.958Z">
+<meta property="og:updated_time" content="2020-12-29T01:32:16.298Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://blog.chenkeren.com/2020/12/13/1213/">
@@ -191,9 +191,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-12-13 23:48:41 / Modified: 23:50:11" itemprop="dateCreated datePublished" datetime="2020-12-13T23:48:41+08:00">2020-12-13</time>
+              <time title="Created: 2020-12-13 23:48:41" itemprop="dateCreated datePublished" datetime="2020-12-13T23:48:41+08:00">2020-12-13</time>
             </span>
 
           
@@ -309,6 +308,11 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function createZoo(): Animal[] &#123;</span><br><span class="line">  <span class="keyword">return</span> [<span class="keyword">new</span> Bee(), <span class="keyword">new</span> Lion()];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> zoo = createZoo();</span><br></pre></td></tr></table></figure>
 
 <p>这个例子里，最佳通用类型有 3 个候选者：Animal，Bee 和 Lion。 其中，Animal 会被做为最佳通用类型。</p>
+<h3 id="关于类型的操作"><a href="#关于类型的操作" class="headerlink" title="关于类型的操作"></a>关于类型的操作</h3><h4 id="amp-操作符"><a href="#amp-操作符" class="headerlink" title="&amp; | 操作符"></a>&amp; | 操作符</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">interface IA &#123;</span><br><span class="line">  a: number;</span><br><span class="line">  b: number[];</span><br><span class="line">&#125;</span><br><span class="line">interface IB &#123;</span><br><span class="line">  b: number[];</span><br><span class="line">  c: string[];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type TA = IA | IB; <span class="comment">// 包含ab或者bc即可</span></span><br><span class="line">type TB = IA &amp; IB; <span class="comment">// 必须包含abc</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">React</span>.<span class="title">Component</span>&lt;<span class="title">P</span> </span>= &#123;&#125;, S = &#123;&#125;, SS = any&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>…</p>
 
     </div>
 
@@ -365,7 +369,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TypeScript-学习笔记（一）"><span class="nav-number">1.</span> <span class="nav-text">TypeScript 学习笔记（一）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础类型"><span class="nav-number">1.2.</span> <span class="nav-text">基础类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口"><span class="nav-number">1.3.</span> <span class="nav-text">接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初探"><span class="nav-number">1.3.1.</span> <span class="nav-text">初探</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可选属性"><span class="nav-number">1.3.2.</span> <span class="nav-text">可选属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#只读属性"><span class="nav-number">1.3.3.</span> <span class="nav-text">只读属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型推断"><span class="nav-number">1.4.</span> <span class="nav-text">类型推断</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最佳通用类型"><span class="nav-number">1.4.1.</span> <span class="nav-text">最佳通用类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上下文类型"><span class="nav-number">1.4.2.</span> <span class="nav-text">上下文类型</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TypeScript-学习笔记（一）"><span class="nav-number">1.</span> <span class="nav-text">TypeScript 学习笔记（一）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础类型"><span class="nav-number">1.2.</span> <span class="nav-text">基础类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口"><span class="nav-number">1.3.</span> <span class="nav-text">接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初探"><span class="nav-number">1.3.1.</span> <span class="nav-text">初探</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可选属性"><span class="nav-number">1.3.2.</span> <span class="nav-text">可选属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#只读属性"><span class="nav-number">1.3.3.</span> <span class="nav-text">只读属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型推断"><span class="nav-number">1.4.</span> <span class="nav-text">类型推断</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最佳通用类型"><span class="nav-number">1.4.1.</span> <span class="nav-text">最佳通用类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上下文类型"><span class="nav-number">1.4.2.</span> <span class="nav-text">上下文类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于类型的操作"><span class="nav-number">1.4.3.</span> <span class="nav-text">关于类型的操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#amp-操作符"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">&amp; | 操作符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#泛型"><span class="nav-number">1.4.4.</span> <span class="nav-text">泛型</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
