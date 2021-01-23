@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="启发式算法简介基本概念 一种基于直观或经验构造的算法。 利用类似仿生学的原理，将自然中的一些现象抽象成为算法处理相应问题。 不是数学方法，思想更类似于人类解决问题的思想。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="启发式算法简介">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2021&#x2F;01&#x2F;23&#x2F;heuristic-algorithm&#x2F;index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="启发式算法简介基本概念 一种基于直观或经验构造的算法。 利用类似仿生学的原理，将自然中的一些现象抽象成为算法处理相应问题。 不是数学方法，思想更类似于人类解决问题的思想。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2021&#x2F;01&#x2F;23&#x2F;heuristic-algorithm&#x2F;01.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2021&#x2F;01&#x2F;23&#x2F;heuristic-algorithm&#x2F;02.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2021&#x2F;01&#x2F;23&#x2F;heuristic-algorithm&#x2F;03.png">
+<meta property="og:updated_time" content="2021-01-23T09:15:45.201Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;blog.chenkeren.com&#x2F;2021&#x2F;01&#x2F;23&#x2F;heuristic-algorithm&#x2F;01.png">
+
+<link rel="canonical" href="https://blog.chenkeren.com/2021/01/23/heuristic-algorithm/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>启发式算法简介 | Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="https://blog.chenkeren.com/2021/01/23/heuristic-algorithm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Chen Keren">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          启发式算法简介
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-01-23 16:27:14 / Modified: 17:15:45" itemprop="dateCreated datePublished" datetime="2021-01-23T16:27:14+08:00">2021-01-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="启发式算法简介"><a href="#启发式算法简介" class="headerlink" title="启发式算法简介"></a>启发式算法简介</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li>一种基于直观或经验构造的算法。</li>
+<li>利用类似仿生学的原理，将自然中的一些现象抽象成为算法处理相应问题。</li>
+<li>不是数学方法，思想更类似于人类解决问题的思想。<a id="more"></a>
+
+</li>
+</ul>
+<h2 id="常见的启发式算法"><a href="#常见的启发式算法" class="headerlink" title="常见的启发式算法"></a>常见的启发式算法</h2><p>例如，我们会经常遇到这种问题：max f(x) x∈X 在某个给定的定义域 X 内，求函数 f(x)对应的最大值。</p>
+<h3 id="爬山算法"><a href="#爬山算法" class="headerlink" title="爬山算法"></a>爬山算法</h3><p>如图：</p>
+<p><img src="/2021/01/23/heuristic-algorithm/01.png" alt></p>
+<p>爬山算法是一种简单的贪心搜索算法，该算法每次从当前解的<strong>临近解空间</strong>中选择一个最优解作为当前解，直到达到一个局部最优解。</p>
+<p>爬山法是完完全全的贪心法，每次都选择一个当前最优解，因此只能搜索到局部的最优值。</p>
+<p><img src="/2021/01/23/heuristic-algorithm/02.png" alt></p>
+<h3 id="模拟退火算法"><a href="#模拟退火算法" class="headerlink" title="模拟退火算法"></a>模拟退火算法</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>退火是一个物理术语，来源于晶体冷却的过程。</p>
+<p>模拟退火算法以一定的概率来接受一个比当前解要差的解，因此有可能会跳出这个局部的最优解，达到全局的最优解。</p>
+<p><img src="/2021/01/23/heuristic-algorithm/03.png" alt></p>
+<p>如图，模拟退火算法在搜索到局部最优解 A 后，会以一定的概率接受到 B 的移动。也许经过几次这样的不是局部最优的移动后会到达 C 点，于是就跳出了局部最大值 A。</p>
+<h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><p>模拟退火算法描述：若 f(i+1) &gt;= f(i) (即移动后得到更优解)，则总是接受该移动；</p>
+<p>若 f(i+1)&lt; f(i) (即移动后的解比当前解要差)，则以<strong>一定的概率</strong>接受移动。“一定的概率”参考了金属冶炼的退火过程，这也是模拟退火算法名称的由来。</p>
+<p>根据热力学的原理，在温度为 T 时，出现能量差为 dE 的降温的概率为 P(dE)。P(dE) = exp( dE/(kT) )</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">* J(y)：在状态y时的评价函数值</span><br><span class="line">* Y(<span class="built_in">i</span>)：表示当前状态</span><br><span class="line">* Y(<span class="built_in">i</span>+<span class="number">1</span>)：表示新的状态</span><br><span class="line">* r： 用于控制降温的快慢</span><br><span class="line">* T： 系统的温度，系统初始应该要处于一个高温的状态</span><br><span class="line">* T_min ：温度的下限，若温度T达到T_min，则停止搜索</span><br><span class="line">*/</span><br><span class="line"><span class="keyword">while</span>( T &gt; T_min )</span><br><span class="line">&#123;</span><br><span class="line">　　dE = J( Y(<span class="built_in">i</span>+<span class="number">1</span>) ) - J( Y(<span class="built_in">i</span>) ) ;</span><br><span class="line">　　if ( dE &gt;=0 ) //表达移动后得到更优解，则总是接受移动</span><br><span class="line">			Y(i+1) = Y(i) ; //接受从Y(i)到Y(i+1)的移动</span><br><span class="line">　　<span class="keyword">else</span></span><br><span class="line">　　&#123;</span><br><span class="line">			// 函数exp( dE/T )的取值范围是(0,1) ，dE/T越大，则exp( dE/T )也</span><br><span class="line">    	<span class="keyword">if</span> ( <span class="built_in">exp</span>( dE/T ) &gt; random( <span class="number">0</span> , <span class="number">1</span> ) )</span><br><span class="line">				Y(i+1) = Y(i) ; //接受从Y(i)到Y(i+1)的移动</span><br><span class="line">　　&#125;</span><br><span class="line">　　T = r * T ; //降温退火 ，0&lt;r&lt;1 。r越大，降温越慢；r越小，降温越快</span><br><span class="line">　　/*</span><br><span class="line">　　* 若r过大，则搜索到全局最优解的可能会较高，但搜索的过程也就较长。若r过小，则搜索的过程会很快，但最终可能会达到一个局部最优值</span><br><span class="line">　　*/</span><br><span class="line">　　<span class="built_in">i</span> ++ ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="遗传算法"><a href="#遗传算法" class="headerlink" title="遗传算法"></a>遗传算法</h3><p>基于达尔文的进化论，模拟了自然选择，物竞天择、适者生存。通过 N 代的遗传、变异、交叉、复制，进化出问题的最优解。</p>
+<p>在遗传算法中，我们首先需要将要解决的问题映射成一个数学问题。那么这个问题的一个<strong>可行解</strong>即被称为一条“染色体”。一个可行解一般由多个元素构成，那么这每一个元素就被称为染色体上的一个“基因”。<br>例：对于函数 x+y+z&lt;100 而言，[1,2,3]、[1,3,2]、[3,2,1]均是这个函数的可行解，即为染色体。这些可行解一共有三个元素构成，那么在遗传算法中，每个元素就被称为一个基因。</p>
+<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><h5 id="适应度函数"><a href="#适应度函数" class="headerlink" title="适应度函数"></a>适应度函数</h5><ul>
+<li>作用：衡量染色体（可行解）的优劣</li>
+<li>适应度函数会给本次迭代中生成的所有染色体打个分，来评判这些染色体的适应度。</li>
+<li>然后将适应度较低的染色体淘汰掉，只保留适应度较高的染色体。经过若干次迭代后染色体的质量将越来越优良。</li>
+</ul>
+<h5 id="选择-交叉"><a href="#选择-交叉" class="headerlink" title="选择/交叉"></a>选择/交叉</h5><ul>
+<li>作用：产生新的染色体</li>
+<li>从上一代的染色体中寻找两条染色体。然后将这两条染色体的某一个位置切断，并拼接在一起，从而生成一条新的染色体。</li>
+<li>染色体 i 被选择的概率 = 染色体 i 的适应度 / 所有染色体的适应度之和。适应度越高的个体被选择的概率越大。</li>
+</ul>
+<h5 id="变异"><a href="#变异" class="headerlink" title="变异"></a>变异</h5><ul>
+<li>作用：产生新的基因</li>
+<li>交叉能保证每次进化留下优良的基因，但它仅仅是对原有的结果集进行选择。基因还是那么几个，只不过交换了他们的组合顺序。为了解决这一个问题，我们需要引入变异。</li>
+<li>当我们通过交叉生成了一条新的染色体后，需要在新染色体上随机选择若干个基因，然后随机修改基因的值。<br>从而给现有的染色体引入了新的基因，突破了当前搜索的限制，更有利于算法寻找到全局最优解。</li>
+</ul>
+<h4 id="进化过程"><a href="#进化过程" class="headerlink" title="进化过程"></a>进化过程</h4><ol>
+<li><p>在算法初始阶段，随机生成一组（N 个）可行解，也就是第一代染色体。</p>
+</li>
+<li><p>然后采用适应度函数分别计算每一条染色体的适应程度，并根据适应程度计算每一条染色体在下一次进化中被选中的概率。</p>
+</li>
+<li><p>通过“交叉”，生成 N 条染色体；</p>
+</li>
+<li><p>再对交叉后生成的 N 条染色体进行“变异”操作；</p>
+</li>
+<li><p>分别计算 N 条染色体的适应度和下次被选中的概率</p>
+<p>…</p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>为了找出地球上最高的山，一群兔子们开始想办法…</p>
+<ul>
+<li>兔子朝着比现在高的地方跳去，找到了不远处的最高山峰。但是这座山不一定是珠穆朗玛峰。这就是爬山法。</li>
+<li>兔子喝醉了，随机地跳了很长时间。这期间，它可能走向高处,也可能踏入平地。但是,他渐渐清醒了并朝他踏过的更高方向跳去。这就是模拟退火。</li>
+<li>把一群兔子随机放到了地球上的某些地方。他们不知道自己的使命是什么。但是,如果你过几年就杀死一部分海拔低的兔子， 多产的兔子们自己就会找到珠穆朗玛峰。这就是遗传算法。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/13/1213/" rel="prev" title="TypeScript 学习笔记（一）">
+      <i class="fa fa-chevron-left"></i> TypeScript 学习笔记（一）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#启发式算法简介"><span class="nav-number">1.</span> <span class="nav-text">启发式算法简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">1.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的启发式算法"><span class="nav-number">1.2.</span> <span class="nav-text">常见的启发式算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#爬山算法"><span class="nav-number">1.2.1.</span> <span class="nav-text">爬山算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模拟退火算法"><span class="nav-number">1.2.2.</span> <span class="nav-text">模拟退火算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法描述"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">算法描述</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遗传算法"><span class="nav-number">1.2.3.</span> <span class="nav-text">遗传算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#相关概念"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">相关概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#适应度函数"><span class="nav-number">1.2.3.1.1.</span> <span class="nav-text">适应度函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#选择-交叉"><span class="nav-number">1.2.3.1.2.</span> <span class="nav-text">选择/交叉</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#变异"><span class="nav-number">1.2.3.1.3.</span> <span class="nav-text">变异</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进化过程"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">进化过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Chen Keren</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chen Keren</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.5.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
